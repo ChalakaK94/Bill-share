@@ -3,9 +3,12 @@ import './App.css';
 import AddPeroples from './components/AddPeoples ';
 import BillShare from './components/BillShare';
 import PeoplesList from './components/PeoplesList';
+import BillDetails from './components/BillDetails';
 
 function App() {
   const [people , setPeople] = useState([])
+
+  const [selectedPerson, setSelectedPerson] = useState('')
 
   function onAddPeople(name){
     setPeople(f=> [...f, {id:Date.now(), name, billDetails:[]}])
@@ -13,6 +16,11 @@ function App() {
 
   function onBillPaid(billDetails){
     setPeople(p=> calculateBill(p, billDetails))
+  }
+
+  function onPersonSelected(person){
+    console.log('person',person);
+    setSelectedPerson(person)
   }
 
   function calculateBill(peoples, billDetails){
@@ -53,7 +61,8 @@ function App() {
     <div className="container">
       <AddPeroples onAddPeople={onAddPeople}/>
       <BillShare people ={people } onBillPaid={onBillPaid} />
-      <PeoplesList people ={people }/>
+      <PeoplesList people ={people } onPersonSelected={onPersonSelected} />
+      {selectedPerson && <BillDetails person={selectedPerson}/>}
     </div>
   );
 }
