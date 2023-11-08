@@ -1,21 +1,34 @@
-export default function BillShare({peoples}){
+import { useState } from "react"
 
-    console.log(peoples);
+export default function BillShare({people ,onBillPaid}){
+
+    const [bill, setBill] = useState('')
+    const [person, setPerson] = useState('')
+
+    console.log(people );
+
+    function submitBill(event) {
+        event.preventDefault();
+        const singlePerson = people .find(p=> +person === +p.id) 
+        const billDetails = {personId: person, name:singlePerson.name, bill}
+        onBillPaid(billDetails)
+      }
+
     return (
         <div>
             <h3>Share Bill Details</h3>
-            <form action="">
+            <form onSubmit={submitBill}>
                 <div>
-                    <label htmlFor="">How Paid the Bill</label>
-                    <select>
+                    <label>How Paid the Bill</label>
+                    <select value={person} onChange={(e)=> setPerson(e.target.value)}>
                         <option value="">Select People</option>
-                        {peoples.map(p=> <option value={p.id} key={p.id}>{p.name}</option>
+                        {people .map(p=> <option value={p.id} key={p.id}>{p.name}</option>
                         )}
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="">Bill Amount</label>
-                    <input type="text" />
+                    <label>Bill Amount</label>
+                    <input type="text" value={bill} onChange={(e)=> setBill(e.target.value)} />
                 </div>
 
                 <div>
